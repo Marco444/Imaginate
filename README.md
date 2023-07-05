@@ -1,16 +1,16 @@
 # Imaginate
 
-Imaginate es un lenguaje pensado tanto para produccion de imagenes, como para el proceso creativo del diseñador grafico. Mediante el lenguaje, podras crear de forma deterministica, pudiendo aplicar operaciones como filtros, efectos, flavours, etc. Si no que tambien permite crear imagenes de forma no deterministica, es decir, poder obtener una imagen producto de un pool de filtros, efectos y demas, donde se aplicaran los dichos de forma aleatoria.
+Imaginate is a language designed for both image production and the creative process of graphic design. Through the language, you can create in a deterministic way, being able to apply operations such as filters, effects, flavours, etc. It also allows you to create images in a non-deterministic way, that is, to obtain an image as a product of a pool of filters, effects and more, where these will be applied randomly.
 
-## Docker y Construccion
+## Docker and Building
 
- Primero es necesario hacer un pull de la siguiente imagen de docker. La cual es cortesia del grupo de Alejo Flores Lucey, al cual agradecemos por compartirnos dicha imagen de docker con todo configurado para poder compilar ambos proyectos.
+First, it's necessary to pull the following Docker image, courtesy of the Alejo Flores Lucey group, to whom we thank for sharing this Docker image with everything set up to compile both projects.
 
-```
+```bash
 $ docker pull alejofl/tla-compiler
 ```
 
-Para construir el proyecto por completo, ejecute en la raíz del repositorio los siguientes comandos:
+To fully build the project, execute the following commands at the repository's root:
 
 ```bash
 $ chmod u+x --recursive script
@@ -18,16 +18,11 @@ $ docker run -v "${PWD}:/root" -ti --rm alejofl/tla-compiler
 $ ./script/build.sh
 ```
 
-Este comando va a abrir una sesion en el contenedor donde se va podra correr los scripts .sh directamente desde ahi.
+This command will open a session in the container where you will be able to run the .sh scripts directly from there.
 
+## Execution
 
-> **Nota:** El docker de Alejo Flores Lucey ha sido actualizado para incluir las dependencias necesarias. Por lo que puede ser necesario actualizar dicha imagen previamente descargada. > Simplemente seria hacer un nuevo docker pull alejofl/tla-compiler. Nuevamente, muchas gracias al Grupo de Alejo.
-
-
-## Ejecución
-
-Para compilar un programa, primero cree un archivo vacío denominado `program` (o el nombre que desee), con el siguiente contenido:
-
+To compile a program, first create an empty file named `program` (or whatever name you prefer), with the following content:
 ```Imaginate
 Imaginate
     .addFocus("./Hola")
@@ -35,40 +30,38 @@ Imaginate
     .renderAll()
 ```
 
-Luego, ejecute el compilador indicando el path hacia el script `start.sh` y pasando por parámetro el path hacia el programa a compilar:
+Then, run the compiler indicating the path to the start.sh script and passing as a parameter the path to the program to compile:
+
 
 ```bash
 root@docker-session:path/ $ ./script/start.sh program
 ```
 
-Debería obtener el valor de retorno valido (0) para dicho programa. En caso de que se modifque la sintaxis del programa por una incorrecta, el valor de retorno sera diferente de 0.
+You should get the valid return value (0) for that program. If the program's syntax is changed to an incorrect one, the return value will be different from 0.
 
-El resultado sera un codigo en python que sera capaz de generar la imagen deseada. Para ejecutar dicho codigo puede hacerlo a mano:
+The result will be Python code that will be able to generate the desired image. To run this code you can do it manually:
 
 ```bash
-$ python3 python3 generator.py
+$ python3 generator.py
 ```
-Alternativamente, a la hora de compilar el programa Imaginate se puede utilizar el flag '-x' para que dicho codigo Pyhton sea ejecutado automaticamente:
-
+Alternatively, when compiling the Imagine program, you can use the '-x' flag so that this Python code is run automatically:
 ```bash
 root@docker-session:path/ $ ./script/start.sh program -x
 ```
 
 ## Testing
 
-Para poder testear el correcto funcionamiento del compilador interpretando la sintaxis, se proveen en el directorio test casos de aceptacion y rechazo. Para validar esto, la catedra ha provisto el siguiente script `./script/test.sh` que tratara de compilar todos los casos de aceptacion y rechazo y mostrara por stdout en cuales se acepto y cuales se rechazo.
+To test the correct functioning of the compiler interpreting the syntax, acceptance and rejection cases are provided in the test directory. To validate this, the chair has provided the following script `./script/test.sh` that will try to compile all acceptance and rejection cases and will show on stdout in which ones it accepted and which ones it rejected.
 
 ```bash
 root@docker-session:path/ $ ./script/test.sh
 ```
 
+If you want to add new use cases, you will need to create a file for each one, which contains the program to be tested within the `test/accept` or `test/reject` folders as appropriate (i.e., whether it should be accepted or rejected by the compiler).
 
-Si desea agregar nuevos casos de uso, deberá crear un archivo por cada uno, que contenga el programa a testear dentro de las carpetas `test/accept` o `test/reject` según corresponda (es decir, si el mismo debe ser aceptado o rechazado por el compilador).
+## Use Cases
 
-## Casos de uso
-
-Para poder poner a prueba el compilador con casos de uso real, en el repositorio hay un directorio con ejemplos basicos en "./examples" que utilizan imagenes tambien presentes en el repositorio.
-Un ejemplo seria:
+To put the compiler to the test with real use cases, the repository has a directory with basic examples in "./examples" that use images also present in the repository. An example would be:
 
 ```bash
 root@docker-session:path/ $ ./script/start.sh examples/basic -x
@@ -78,6 +71,5 @@ root@docker-session:path/ $ ./script/start.sh examples/customMethodAndObjects -x
 root@docker-session:path/ $ ./script/start.sh examples/forEachFocus2objects -x
 ```
 
-> Notar el uso del flag -x para la generacion automatica de las imagenes.
->
-> Recordar ejectura dentro del docker
+> Note the use of the -x flag for automatic image generation.
+> Remember to run inside Docker
